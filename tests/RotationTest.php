@@ -129,3 +129,20 @@ class RotationTest extends TestCase
         $this->assertFileExists(self::DIR_WORK.'file.log.1.gz');
     }
 }
+
+public function testRotationOfRotatedFiles()
+{
+    file_put_contents(self::DIR_WORK.'file.log.1', microtime(true));
+
+    $rotation = new Rotation();
+
+    $rotation->rotate(self::DIR_WORK.'file.log.1');
+
+    $this->assertFileExists(self::DIR_WORK.'file.log.1.1');
+
+    $rotation = new Rotation();
+
+    $rotation->rotate(self::DIR_WORK.'file.log.1');
+
+    $this->assertFileExists(self::DIR_WORK.'file.log.1.2');
+}
